@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="icon" href="../../../images/olympic-rings-colorized.svg" />
+    <title>ITW 2022/23 - Olympic Athletes List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.min.css"
+    />
+
+    <link
+      href="../../../libs/bootstrap-5.2.2-dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../../../libs/font-awesome-4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../../style.css" />
+  </head>
+  <body>
+    <header class="position-sticky top-0" style="z-index: 1000">
+      <nav
+        class="navbar navbar-expand-lg bg-white border-bottom"
+        aria-label="Primary Navigation"
+      >
+        <a class="navbar-brand font-bold ms-5" href="../../../index.html"
+          ><img
+            src="../../../images/olympic-rings-colorized.svg"
+            alt="Olympic Rings"
+            style="object-fit: contai; max-height: 3.5rem"
+        /></a>
+        <button
+          class="navbar-toggler me-5"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav gap-3 ms-auto me-5 fs-5 align-items-end">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                aria-current="page"
+                href="../../statistics/statistics.html"
+                ><i class="fa fa-bar-chart text-secondary"></i> Statistics</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                aria-current="page"
+                href="../../favorites/favorites.html"
+                ><i class="fa fa-heart-o text-danger"></i> Favorites</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="../athletes.html"
+                ><i class="fa fa-user-o text-warning"></i> Athletes</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                aria-current="page"
+                href="../../countries/countries.html"
+                ><i class="fa fa-flag-o text-danger"></i> Countries</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                aria-current="page"
+                href="../../games/games.html"
+                ><i class="fa fa-map-marker text-success"></i> Games</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                aria-current="page"
+                href="../../modalities/modalities.html"
+                ><i class="fa fa-soccer-ball-o text-primary"></i> Modalities</a
+              >
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <!-- Working Area -->
+    <div id="target-element">&nbsp;</div>
+    <main class="container my-3">
+      <div class="row pb-3">
+        <div class="col-12 col-md-9 row">
+          <div class="col-4">
+            <img
+              class="square rounded-circle w-100"
+              data-bind="attr: {src: photo}"
+              alt="Athlete Image"
+              style="object-fit: cover; object-position: top"
+            />
+          </div>
+          <div class="col-8">
+            <h1
+              class="text-center text-athlete-header"
+              data-bind="text: name"
+            ></h1>
+            <div class="row">
+              <div class="d-flex align-items-center">
+                <img
+                  class="square border border-"
+                  data-bind="attr: {src: modalityLogo, alt: `${modality()}-logo`}"
+                  alt=""
+                  style="max-height: 5rem"
+                />
+                <span
+                  class="ms-3 fs-5 fw-bold"
+                  data-bind="text: modality"
+                ></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 border-start">
+          <ul class="list-group list-group-flush">
+            <li class="d-flex list-group-item align-items-center">
+              <span class="text-muted fw-bold">Olympic Medals:</span>
+
+              <div class="d-flex ms-auto" data-bind="foreach: medals">
+                <span
+                  class="rounded-circle square text-light fw-bold d-flex align-items-center justify-content-center m-2"
+                  data-bind=" text: Counter, css: {'gold': MedalName === 'Gold', 'silver': MedalName === 'Silver', 'bronze': MedalName === 'Bronze'}"
+                  style="width: 2rem"
+                ></span>
+              </div>
+            </li>
+            <li class="d-flex list-group-item align-items-center">
+              <span class="text-muted fw-bold">Game Participation:</span>
+              <span
+                class="fs-5 fw-bold ms-auto"
+                data-bind="text: games().length"
+              >
+              </span>
+            </li>
+            <li class="list-group-item d-flex align-items-center">
+              <span class="text-muted fw-bold">Birth Date:</span
+              ><span
+                class="fs-5 fw-bold ms-auto"
+                data-bind="text: bornDate"
+              ></span>
+            </li>
+            <li class="list-group-item d-flex align-items-center">
+              <span class="text-muted fw-bold">Death Date:</span
+              ><span
+                class="fs-5 fw-bold ms-auto"
+                data-bind="text: deathDate"
+              ></span>
+            </li>
+            <li class="list-group-item d-flex align-items-center">
+              <span class="text-muted fw-bold">Height:</span
+              ><span
+                class="fs-5 fw-bold ms-auto"
+                data-bind="text: `${height()} cm`"
+              ></span>
+            </li>
+            <li class="list-group-item d-flex align-items-center">
+              <span class="text-muted fw-bold">Weight:</span
+              ><span
+                class="fs-5 fw-bold ms-auto"
+                data-bind="text: `${weight()} kg`"
+              ></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <hr class="m-0" />
+      <div class="mb-3">
+        <h1 class="fw-bold text-muted text-center my-1">GAMES</h1>
+        <ul class="list-group rounded-0 border-top" data-bind="foreach: games">
+          <li class="list-group-item p-0 border-0">
+            <div
+              class="d-flex align-items-center justify-content-around w-100 border-bottom"
+            >
+              <h2 class="fw-semibold" data-bind="text: Name"></h2>
+              <img
+                data-bind="attr: {src: Logo}"
+                alt="Logo"
+                style="height: 6rem"
+              />
+            </div>
+            <ul
+              class="list-group list-group-flush d-flex align-items-center flex-column bg-light border-bottom"
+            >
+              <li class="list-group-item col-6 d-flex bg-light">
+                <span class="text-muted">Country:</span
+                ><span
+                  class="ms-auto fw-bold"
+                  data-bind="text: CountryName"
+                ></span>
+              </li>
+              <li class="list-group-item col-6 d-flex bg-light">
+                <span class="text-muted">City:</span
+                ><span
+                  class="ms-auto fw-bold"
+                  data-bind="text: CityName"
+                ></span>
+              </li>
+              <li class="list-group-item col-6 d-flex bg-light">
+                <span class="text-muted">Year:</span
+                ><span class="ms-auto fw-bold" data-bind="text: Year"></span>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <hr class="m-0" />
+      <div>
+        <h1 class="text-muted fw-bold text-center my-1">COMPETITIONS</h1>
+        <ul
+          class="list-group rounded-0 d-flex flex-column align-items-center p-0 border-0 gap-3"
+          data-bind="foreach: competitions"
+        >
+          <li class="list-group-item col-6 p-0 rounded-0 border">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex">
+                <span class="text-muted">Modality:</span
+                ><span class="ms-auto" data-bind="text:Modality"></span>
+              </li>
+              <li class="list-group-item d-flex bg-light">
+                <span class="text-muted">Name:</span
+                ><span class="ms-auto" data-bind="text: Name"></span>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </main>
+    <div
+      class="fixed-bottom end-0 d-flex justify-content-end"
+      style="height: 6rem"
+    >
+      <img
+        src="../../../images/BackTop.svg"
+        type="button"
+        class="me-5 mb-5 text-"
+        id="BackTop-button"
+        alt=""
+      />
+    </div>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="myModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <img
+                src="../../../images/olympic-rings-colorized.svg"
+                style="height: 2rem"
+                alt="Olympic Rings"
+              />
+              Loading data...
+            </h5>
+          </div>
+          <div class="modal-body text-center">
+            <i class="fa fa-spin fa-3x fa-refresh"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of Working Area -->
+
+    <footer class="footer-20192" style="margin-top: 13rem">
+      <div class="site-section">
+        <div class="container">
+          <div
+            class="cta d-block d-md-flex align-items-center px-5"
+            style="background-color: #fe5f55"
+          >
+            <div>
+              <h2 class="mb-0 me-3">Excited for new projects?</h2>
+              <h3 class="text-dark">Don't miss out!</h3>
+            </div>
+            <div class="ml-auto">
+              <a
+                href="../../../index.html#Novidades"
+                id="btnNov"
+                class="btn btn-outline-light rounded-3 rounded-0 py-3 px-5"
+                >Sign up for news</a
+              >
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3 col-6">
+              <a href="#">
+                <img
+                  src="../../../images/olympic-rings.svg"
+                  class="ms-4"
+                  width="50%"
+                />
+              </a>
+              <p class="copyright">
+                <small>&copy; 2023</small>
+              </p>
+            </div>
+            <div class="col-3 d-md-block d-none">
+              <h3>About</h3>
+              <ul class="list-unstyled links">
+                <li><a href="../../../index.html">Home</a></li>
+                <li><a href="../../athletes/athletes.html">Athletes</a></li>
+                <li>
+                  <a href="../../modalities/modalities.html">Modalities</a>
+                </li>
+                <li><a href="../../countries/countries.html">Countries</a></li>
+                <li><a href="../../games/games.html">Games</a></li>
+                <li>
+                  <a href="../../statistics/statistics.html">Statistics</a>
+                </li>
+              </ul>
+            </div>
+            <div class="col-3 d-md-block d-none">
+              <h3>Important Links</h3>
+              <ul class="list-unstyled links">
+                <li><a href="https://www.ua.pt/">Universidade de Aveiro</a></li>
+                <li>
+                  <a href="https://www.ua.pt/pt/uc/12289"
+                    >Introdução às Tecnologias Web
+                  </a>
+                </li>
+                <li><a href="https://github.com/detiuaveiro">DETI - UA </a></li>
+              </ul>
+            </div>
+            <div class="col-md-3 col-6">
+              <h3>Brought to you by:</h3>
+              <ul class="list-unstyled links">
+                <li>
+                  <a href="mailto:pmap@ua.pt">pmap@ua.pt</a>&nbsp;&nbsp;&nbsp;<a
+                    class="me-5"
+                    href="https://github.com/GH-Pedro"
+                    ><span class="fa fa-github"></span
+                  ></a>
+                </li>
+                <li>
+                  <a href="mailto:zakhar.kruptsala@ua.pt"
+                    >zakhar.kruptsala@ua.pt</a
+                  >&nbsp;&nbsp;&nbsp;<a
+                    class="me-5"
+                    href="https://github.com/Blosuhm"
+                    ><span class="fa fa-github"></span
+                  ></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="../../../libs/bootstrap-5.2.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../../libs/knockout-3.5.1.js"></script>
+    <script src="../../../libs/jquery/jquery-3.6.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.min.js"></script>
+    <script src="athleteDetails.js"></script>
+  </body>
+</html>

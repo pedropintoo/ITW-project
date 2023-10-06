@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>ITW 2022/23 - Olympic Countries edition Details</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
+    />
+    <link
+      href="../../../libs/bootstrap-5.2.2-dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../../../libs/font-awesome-4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../../style.css" />
+    <link rel="stylesheet" href="../countrieStyle.css">
+    <link rel="stylesheet" href="countryDetailsStyle.css">
+  </head>
+  <body>
+    <header class="position-sticky top-0" style="z-index: 1000">
+      <nav
+        class="navbar navbar-expand-lg bg-white border-bottom"
+        aria-label="Primary Navigation"
+      >
+        <a class="navbar-brand font-bold ms-5" href="../../../index.html"
+          ><img
+            src="../../../images/olympic-rings-colorized.svg"
+            alt="Olympic Rings"
+            style="object-fit: contai; max-height: 3.5rem"
+        /></a>
+        <button
+          class="navbar-toggler me-5"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav gap-3 ms-auto me-5 fs-5 align-items-end">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="../../statistics/statistics.html"
+                ><i class="fa fa-bar-chart text-secondary"></i> Statistics</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link "
+                aria-current="page"
+                href="../../favorites/favorites.html"
+                ><i class="fa fa-heart-o text-danger"></i> Favorites</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                aria-current="page"
+                href="../../athletes/athletes.html"
+                ><i class="fa fa-user-o text-warning"></i> Athletes</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="../countries.html"
+                ><i class="fa fa-flag-o text-danger"></i> Countries</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                aria-current="page"
+                href="../../games/games.html"
+                ><i class="fa fa-map-marker text-success"></i> Games</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                aria-current="page"
+                href="../../modalities/modalities.html"
+                ><i class="fa fa-soccer-ball-o text-primary"></i> Modalities</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- Work Area-->
+    <div id="target-element">&nbsp;</div>
+
+    <div class="container mt-0" style="transform: scale(0.9);">
+      <div class="row d-flex justify-content-center position-relative" >
+        <div class="col-12 col-xl-5">
+          
+          <div class="card border-0 col-6 col-sm-6 col-md-4 col-lg-3 p-0  text-center position-relative mb-4 pb-0 bg-transparent" style="width: 33rem ;">
+            <div class="card-body pb-0">
+              
+
+              <div class="p-3">
+                <div class="shadow d-flex h-25 justify-content-center mb-5 pb-0">
+                  <img
+                    class="country w-100 img-fluid"
+                    data-bind="attr: { src: Flag, alt: Name, title: Name() +' - ' + Id() }"
+                    style="height: 16rem;width: 20rem;"
+                    alt=""
+                  >
+                  <!-- Esta no countries.js a config do .fav -->
+                  <a
+                    class="shadow fav btn m-0 fa rounded-circle p-3 bg-white position-absolute"
+                    data-bind="click: function() {toggleFavorite(Id())} , attr: {id: 'fav-' + Id()}, css: {'text-danger': isFavorite(Id()), 'fa-heart': isFavorite(Id()), 'fa-heart-o': !isFavorite(Id())}"
+                    title="Selecione para adicionar aos favoritos"
+                    style="top: 17rem;"
+                  ></a>
+      
+                </div>
+                <h5 class="text-center my-3 mt-1" style="font-size:3.5rem ;" data-bind="text: IOC()+' '+Name(), css: { Ouro: verOuro(Id) > 0, Prata: verPrata(Id) > 0 && verOuro(Id) == 0, Bronze: verBronze(Id) > 0 && verPrata(Id) == 0}"></h5>
+
+                <br>
+              </div>
+            </div>
+          </div>
+          <div class="leaderboard text-center mx-auto mt-0 mb-5">
+            <header>
+              <img class="leaderboard__icon" src="https://cdn-icons-png.flaticon.com/512/4489/4489655.png" style="filter: brightness(100%) invert(100%)"></img>
+              <h1 class="leaderboard__title"><span class="leaderboard__title--top">Boas Classificações</span><span class="leaderboard__title--bottom">Tabela</span></h1>
+            </header>
+            <main class="leaderboard__profiles" data-bind="foreach: bestAtletas">
+              <article class="leaderboard__profile">
+                <img data-bind="attr:{src: Foto}" class="leaderboard__picture" style="height: 5rem; width: 5rem;" alt="">
+                <span class="leaderboard__name" data-bind="text: Nome"></span>
+                <span class="leaderboard__value" data-bind="text: Posicao"></span>
+              </article>
+            </main>
+          </div>
+          </div>
+        <div class="col-12 col-xl-7">
+          <div class="row mb-4">
+            <div class="col-4 text-center">
+              <a
+                class="shadow fav btn m-0 p-1 rounded-circle text-white"
+                data-bind="text: ouro"
+                title="Medalhas de ouro"
+                style="background-color: #f3cf03; min-width: 2rem; min-height: 2rem;"
+              ></a>
+              <h5 class="Ouro mt-2">Medalhas de Ouro</h5>
+            </div>
+            <div class="col-4 text-center">
+              <a
+              class=" shadow fav btn m-0 p-1 rounded-circle  text-white"
+              data-bind="text: prata"
+              title="Medalhas de prata"
+              style="background-color: #7a8386; min-width: 2rem; min-height: 2rem;"
+            ></a>
+              <h5 class="Prata mt-2">Medalhas de Prata</h5>
+            </div>
+            <div class="col-4 text-center">
+              <a
+              class=" shadow fav btn m-0 p-1 rounded-circle text-white"
+              data-bind="text: bronze"
+              title="Medalhas de bronze"
+              style="background-color: #cd7f32; min-width: 2rem; min-height: 2rem;"
+            ></a>
+              <h5 class="Bronze mt-2">Medalhas de Bronze</h5>
+            </div>            
+          </div>
+          <hr style="color: black; z-index: 1000000000;">
+          
+          <div class="row">
+            
+            <div class="col-12 col-lg-6 text-center mt-5 h3">
+              <ul class="tilesWrap">
+                <li>
+                  <h2 data-bind="text: lenParticipant"></h2>
+                  <h3><b>Participações</b></h3>
+                  <p>
+                    Os Jogos Olímpicos são um evento desportivo internacional que ocorre a cada quatro anos e reúne atletas de todo o mundo para competir em várias modalidades.
+                  </p>
+                  <button id="scroll-button1" style="font-size:1.3rem ;" data-bind="visible: lenParticipant()>0">Ver mais</button>
+                </li>
+              </ul>
+            </div>
+            
+            
+            <div class="col-6 text-center mt-5 h3">
+              <ul class="tilesWrap">
+                <li>
+                  <h2 data-bind="text: lenModalidade"></h2>
+                  <h3><b>Modalidades</b></h3>
+                  <p>
+                    As modalidades dos Jogos Olímpicos são os tipos de desporto e atividades físicas incluídos nos Jogos. Atualmente, existem enumeras modalidades nos Jogos Olímpicos, incluindo despostos como atletismo, natação, tênis de mesa e futebol.                  </p>
+                  <button id="scroll-button2" style="font-size:1.3rem ;" data-bind="visible: lenModalidade()>0">Ver mais</button>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-lg-6 text-center mt-5 h3">
+              <ul class="tilesWrap">
+                <li>
+                  <h2 data-bind="text: lenOrganizer">2</h2>
+                  <h3><b>Organizações</b></h3>
+                  <p>
+                    Os Jogos Olímpicos são organizados pela Comissão Olímpica Internacional (COI) em conjunto com a organização local dos Jogos em um país ou cidade específica escolhido pelo COI a cada quatro anos.                  </p>
+                  <button id="scroll-button3" style="font-size:1.3rem; " data-bind="visible: lenOrganizer()>0" >Ver mais</button>
+                </li>
+              </ul>
+            </div>
+            <div class="col-6 text-center mt-5 h3">
+              <ul class="tilesWrap">
+                <li>
+                  <h2 data-bind="text: lenAtletas"></h2>
+                  <h3><b>Atletas</b></h3>
+                  <p>
+                    Os atletas são os participantes dos Jogos Olímpicos que competem nas diferentes modalidades esportivas. Eles são escolhidos pelas respectivas federações esportivas de cada país para representar seus países nos Jogos Olímpicos.                   </p>
+                  <button id="scroll-button4" style="font-size:1.3rem ;" data-bind="visible: lenAtletas()>0">Ver mais</button>
+                </li>
+              </ul>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="container w-75">
+      <h1 class="display-5 mt-2"  id="target-element1">Lista de Participações</h1>
+      <table class="table table-striped table-sm small">
+        <thead class="bg-dark text-light">
+          <th>
+            <th scope="col">Nome</th>
+            <th scope="col">País</th>
+            <th scope="col">Cidade</th>
+          </th>
+        </thead>
+        <tbody data-bind="foreach: Participant"  style="height: 0">
+          <tr>
+            <td style="width: 2rem;">
+              <img class="rounded-circle" style="height: 2rem;width: 2rem;" data-bind="attr : {src: Logo}"></img>
+            </td>
+            <td class="align-middle"  data-bind="text: Name"></td>
+            <td class="align-middle" data-bind="text: CountryName"></td>
+            <td class="align-middle" data-bind="text: CityName"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="container w-50">
+      <h1 class="display-5 mt-5" id="target-element2">Lista de Modalidades</h1>
+      <table class="table table-striped table-sm small">
+        <thead class="bg-dark text-light">
+          <tr>
+            <th scope="col" class="text-center">Modalidades</th>
+          </tr>
+        </thead>
+        <tbody data-bind="foreach: modalities"  style="height: 0">
+          <tr>
+            <td class="text-center" data-bind="text: $data"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="container w-75">
+
+      <h1 class="display-5 mt-2" id="target-element3" data-bind="visible: lenOrganizer() > 0">Lista de Organizações</h1>
+      <table class="table table-striped table-sm small" data-bind="visible: lenOrganizer() > 0">
+        <thead class="bg-dark text-light">
+          <th>
+            <th scope="col">Nome</th>
+            <th scope="col">País</th>
+            <th scope="col">Cidade</th>
+          </th>
+        </thead>
+        <tbody data-bind="foreach: Organizer"  style="height: 0">
+          <tr>
+            <td style="width: 2rem;">
+              <img class="rounded-circle" style="height: 2rem;width: 2rem;" data-bind="attr : {src: Logo}"></img>
+            </td>
+            <td class="align-middle"  data-bind="text: Name"></td>
+            <td class="align-middle" data-bind="text: CountryName"></td>
+            <td class="align-middle" data-bind="text: CityName"></td>
+          </tr>
+        </tbody> 
+      </table>
+
+      <h1 class="display-5 mt-5"  id="target-element4">Lista de Atletas</h1>
+      <table class="table table-striped table-sm small">
+        <thead class="bg-dark text-light">
+          <th>
+            <th scope="col">Nome</th>
+            <th scope="col">Sexo</th>
+            <th scope="col">Melhor Posição</th>
+          </th>
+        </thead>
+        <tbody data-bind="foreach: records"  style="height: 0">
+          <tr>
+            <td style="width: 2rem;">
+              <img class="rounded-circle" style="height: 2rem;width: 2rem;" data-bind="attr : {src: Photo}"></img>
+            </td>
+            <td class="align-middle"  data-bind="text: Name"></td>
+            <td class="align-middle" data-bind="text: Sex"></td>
+            <td class="align-middle" data-bind="text: BestPosition"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div
+	  class="fixed-bottom end-0 d-flex justify-content-end"
+	  style="height: 6rem"
+	>
+	  <img
+		src="../../../images/BackTop.svg"
+		type="button"
+		class="me-5 mb-5 text-"
+		id="BackTop-button"
+		alt=""
+	  />
+	</div>
+	
+
+
+
+    
+    <!-- End of Work Area -->
+    <footer class="footer-20192" style="margin-top: 13rem;">
+      <div class="site-section">
+        <div class="container">
+
+          <div class="cta d-block d-md-flex align-items-center px-5" style="background-color: #FE5F55 ">
+            <div>
+              <h2 class="mb-0 me-3">Excited for new projects?</h2>
+              <h3 class="text-dark">Don't miss out!</h3>
+            </div>
+            <div class="ml-auto">
+              <a  href="../../../index.html#Novidades" id="btnNov" class="btn btn-outline-light rounded-3 rounded-0 py-3 px-5">Sign up for news</a>
+            </div>
+          </div>
+          <div class="row">
+
+            <div class="col-md-3 col-6">
+              <a href="#">
+                <img src="../../../images/olympic-rings.svg" class=" ms-4" width="50%">
+              </a>
+              <p class="copyright">
+                <small>&copy; 2023</small>
+              </p>
+            </div>
+            <div class="col-3 d-md-block d-none">
+              <h3>About</h3>
+              <ul class="list-unstyled links">
+                <li><a href="../../../index.html">Home</a></li>
+                <li><a href="../../athletes/athletes.html">Athletes</a></li>
+                <li><a href="../../modalities/modalities.html">Modalities</a></li>
+                <li><a href="../../countries/countries.html">Countries</a></li>
+                <li><a href="../../games/games.html">Games</a></li>
+                <li><a href="../../statistics/statistics.html">Statistics</a></li>
+              </ul>
+            </div>
+            <div class="col-3 d-md-block d-none">
+              <h3>Important Links</h3>
+              <ul class="list-unstyled links">
+                <li><a href="https://www.ua.pt/">Universidade de Aveiro</a></li>
+                <li><a href="https://www.ua.pt/pt/uc/12289">Introdução às Tecnologias Web </a></li>
+                <li><a href="https://github.com/detiuaveiro">DETI - UA </a></li>
+              </ul>
+            </div>
+            <div class="col-md-3 col-6">
+              <h3>Feito por:</h3>
+              <ul class="list-unstyled links">
+                <li><a href="mailto:pmap@ua.pt">pmap@ua.pt</a>&nbsp;&nbsp;&nbsp;<a class="me-5" href="https://github.com/GH-Pedro"><span class="fa fa-github"></span></a></li>
+                <li><a href="mailto:zakhar.kruptsala@ua.pt">zakhar.kruptsala@ua.pt</a>&nbsp;&nbsp;&nbsp;<a class="me-5" href="https://github.com/Blosuhm"><span class="fa fa-github"></span></a></li>
+              </ul>
+            </div>            
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="../../../libs/bootstrap-5.2.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../../libs/knockout-3.5.1.js"></script>
+    <script src="../../../libs/jquery/jquery-3.6.1.js"></script>
+    <script src="countryDetais.js"></script>
+  </body>
+</html>

@@ -1,0 +1,540 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="icon" href="../../images/olympic-rings-colorized.svg" />
+    <title>ITW 2022/23 - Olympic Athletes List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.min.css"
+    />
+
+    <link
+      href="../../libs/bootstrap-5.2.2-dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../../libs/font-awesome-4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../style.css" />
+  </head>
+  <body>
+    <header class="position-sticky top-0" style="z-index: 1000">
+      <nav
+        class="navbar navbar-expand-lg bg-white border-bottom"
+        aria-label="Primary Navigation"
+      >
+        <a class="navbar-brand font-bold ms-5" href="../../index.html"
+          ><img
+            src="../../images/olympic-rings-colorized.svg"
+            alt="Olympic Rings"
+            style="object-fit: contai; max-height: 3.5rem"
+        /></a>
+        <button
+          class="navbar-toggler me-5"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav gap-3 ms-auto me-5 fs-5 align-items-end">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                aria-current="page"
+                href="../statistics/statistics.html"
+                ><i class="fa fa-bar-chart text-secondary"></i> Statistics</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#"
+                ><i class="fa fa-heart-o text-danger"></i> Favorites</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                aria-current="page"
+                href="../athletes/athletes.html"
+                ><i class="fa fa-user-o text-warning"></i> Athletes</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                aria-current="page"
+                href="../countries/countries.html"
+                ><i class="fa fa-flag-o text-danger"></i> Countries</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="../games/games.html"
+                ><i class="fa fa-map-marker text-success"></i> Games</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                aria-current="page"
+                href="../modalities/modalities.html"
+                ><i class="fa fa-soccer-ball-o text-primary"></i> Modalities</a
+              >
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <!-- Working Area -->
+    <div id="target-element">&nbsp;</div>
+    <main class="container my-3">
+      <div class="d-flex justify-content-center">
+        <h1 class="fw-bold mb-5">Welcome to the your Favorites</h1>
+      </div>
+
+      <div>
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+          <div class="accordion-item" data-bind="visible: favAthletes().length > 0">
+            <h2 class="accordion-header" id="flush-headingOne">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseOne"
+                aria-expanded="false"
+                aria-controls="flush-collapseOne"
+              >
+                Athletes
+              </button>
+            </h2>
+            <div
+              id="flush-collapseOne"
+              class="accordion-collapse collapse"
+              aria-labelledby="flush-headingOne"
+              data-bs-parent="#accordionFlushExample"
+            >
+              <div class="accordion-body">
+                <div
+                  class="row row-cols-1 row-cols-md-2 row-cols-lg-4"
+                  data-bind="foreach: favAthletes"
+                >
+                  <div>
+                    <div class="card mt-3 mx-1 shadow border-0 athlete-card">
+                      <div class="d-flex" data-bind="foreach: Details.Medals">
+                        <span
+                          class="rounded-circle square text-light fw-bold d-flex align-items-center justify-content-center m-2"
+                          data-bind=" text: Counter, css: {'gold': MedalName === 'Gold', 'silver': MedalName === 'Silver', 'bronze': MedalName === 'Bronze'}"
+                          style="width: 2rem"
+                        ></span>
+                      </div>
+                      <div class="px-5 py-1 position-relative">
+                        <a
+                          class="mt-2"
+                          data-bind="attr: {href: `../athletes/athleteDetails/athleteDetails.html?id=${Id}`}"
+                          ><img
+                            class="w-100 square rounded-circle"
+                            data-bind="attr: {src: Photo}"
+                            style="object-fit: cover; object-position: top"
+                            alt=""
+                        /></a>
+
+                        <button
+                          class="fa fa-heart text-danger position-absolute shadow bg-white btn square border-0 rounded-circle fs-4"
+                          data-bind="click: function() {$parent.toggleFavAthletes($data)} , attr: {id: 'fav-' + Id}"
+                          style="width: 3rem; bottom: 0px; right: 3.5rem"
+                          aria-hidden="true"
+                        ></button>
+                      </div>
+                      <div class="card-body mt-auto flex-grow-0">
+                        <h5
+                          class="card-title mt-3"
+                          style="height: 2em"
+                          data-bind="text:Name"
+                        ></h5>
+                        <hr />
+                        <span data-bind="text: Details.Modality"></span>
+                        <div>
+                          <span data-bind="html: Details.Country"></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item" data-bind="visible: favCountries().length > 0">
+            <h2 class="accordion-header" id="flush-headingTwo">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseTwo"
+                aria-expanded="false"
+                aria-controls="flush-collapseTwo"
+              >
+                Countries
+              </button>
+            </h2>
+            <div
+              id="flush-collapseTwo"
+              class="accordion-collapse collapse"
+              aria-labelledby="flush-headingTwo"
+              data-bs-parent="#accordionFlushExample"
+            >
+              <div class="accordion-body">
+                <div
+                  class="d-flex justify-content-center flex-wrap"
+                  data-bind="foreach: favCountries"
+                >
+                  <div
+                    class="card shadow col-6 col-sm-6 col-md-4 col-lg-3 m-3 p-0 text-center position-relative"
+                  >
+                    <div class="card-body">
+                      <div class="p-3 mt-4">
+                        <div class="shadow d-flex h-25 justify-content-center">
+                          <img
+                            class="country w-100"
+                            data-bind="attr: { src: Flag, alt: Name }"
+                            style="height: 8rem; width: 10rem"
+                            alt=""
+                          />
+                          <!-- Esta no countries.js a config do .fav -->
+                          <button
+                            class="shadow fav btn m-0 fa text-danger fa-heart rounded-circle p-3 bg-white position-absolute fs-4"
+                            data-bind="click: function() {$parent.toggleFavCountries($data)} , attr: {id: 'fav-' + Id}"
+                            title="Selecione para adicionar aos favoritos"
+                            style="top: 10.5rem"
+                          ></button>
+                        </div>
+                        <br />
+                      </div>
+                      <h5
+                        class="text-center my-3"
+                        style="font-size: 1.7rem"
+                        data-bind="text: Name"
+                      ></h5>
+                      <a
+                        class="btn btn-outline-primary"
+                        data-bind="attr: { href:'../countries/countryDetails/countryDetails.html?id=' + Id }"
+                        >View More</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item" data-bind="visible: favModalities().length > 0">
+            <h2 class="accordion-header" id="flush-headingThree">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseThree"
+                aria-expanded="false"
+                aria-controls="flush-collapseThree"
+              >
+                Modalities
+              </button>
+            </h2>
+            <div
+              id="flush-collapseThree"
+              class="accordion-collapse collapse"
+              aria-labelledby="flush-headingThree"
+              data-bs-parent="#accordionFlushExample"
+            >
+              <div class="accordion-body">
+                <div
+                  class="d-flex justify-content-center flex-wrap"
+                  data-bind="foreach: favModalities"
+                >
+                  <div
+                    class="card shadow col-6 col-sm-6 col-md-4 col-lg-3 m-3 p-0 text-center position-relative"
+                  >
+                    <div class="card-body">
+                      <div class="p-3 mt-4 athlete-card">
+                        <div class="shadow d-flex h-25 justify-content-center">
+                          <a
+                            data-bind="attr: {href: '../modalities/modalities.html?id='+Id}"
+                          >
+                            <img
+                              type="button"
+                              class="modalitie w-100 img-fluid rounded-3"
+                              data-bind="attr: { src: Photo, alt: Name} "
+                              style="height: 8rem; width: 10rem"
+                              alt=""
+                            />
+                          </a>
+                          <!-- Esta no countries.js a config do .fav -->
+                          <button
+                            class="fa fa-heart text-danger position-absolute shadow bg-white btn square border-0 rounded-circle fs-4"
+                            data-bind="click: function() {$parent.toggleFavModalities($data)} , attr: {id: 'fav-' + Id}"
+                            style="width: 3rem; top: 10.5rem"
+                            aria-hidden="true"
+                          ></button>
+                        </div>
+                        <br />
+                      </div>
+                      <h5
+                        class="text-center my-3"
+                        style="font-size: 1.7rem"
+                        data-bind="text: Name"
+                      ></h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item" data-bind="visible: favGames().length > 0">
+            <h2 class="accordion-header" id="flush-headingFour">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseFour"
+                aria-expanded="false"
+                aria-controls="flush-collapseFour"
+              >
+                Games
+              </button>
+            </h2>
+            <div
+              id="flush-collapseFour"
+              class="accordion-collapse collapse"
+              aria-labelledby="flush-headingFour"
+              data-bs-parent="#accordionFlushExample"
+            >
+              <div class="accordion-body">
+                <div
+                  class="row row-cols-1 row-cols-md-2 row-cols-lg-3"
+                  data-bind="foreach: favGames"
+                >
+                  <div class="px-3 my-3">
+                    <div class="list-group-item border bg-white shadow">
+                      <div
+                        class="d-flex justify-content-around align-items-center border-bottom"
+                      >
+                        <a
+                          data-bind="attr: {href: `gameDetails/gameDetails.html?id=${Id}`}"
+                          class="text-decoration-none"
+                        >
+                          <h2
+                            class="text-muted fw-bold fs-3"
+                            data-bind="text: Name"
+                          ></h2>
+                        </a>
+                        <a
+                          class="d-flex justify-content-center align-items-center m-1"
+                          data-bind="attr: {href: `../games/gameDetails/gameDetails.html?id=${Id}`}"
+                          style="width: 50%"
+                        >
+                          <img
+                            class="img-thumbnail"
+                            data-bind="attr: {src: Logo}"
+                            alt=""
+                            style="height: 16rem; object-fit: contain"
+                          />
+                        </a>
+                        <button
+                          class="fa fa-heart text-danger position-absolute shadow bg-white btn square border-0 rounded-circle fs-4"
+                          data-bind="click: function() {$parent.toggleFavGames($data)}, attr: {id: 'fav-' + Id}"
+                          style="width: 3rem; top: 11rem; left: 5rem"
+                          aria-hidden="true"
+                        ></button>
+                      </div>
+                      <ul class="list-group list-group-flush">
+                        <li
+                          class="list-group-item d-flex justify-content-between"
+                        >
+                          <span class="text-muted small">Country:</span
+                          ><span data-bind="text: CountryName"></span>
+                        </li>
+                        <li
+                          class="list-group-item d-flex justify-content-between"
+                        >
+                          <span class="text-muted small">City:</span
+                          ><span data-bind="text: CityName"></span>
+                        </li>
+                        <li
+                          class="list-group-item d-flex justify-content-between"
+                        >
+                          <span class="text-muted small">Year:</span
+                          ><span data-bind="text: Year"></span>
+                        </li>
+                      </ul>
+                      <img
+                        class="border"
+                        data-bind="attr: {src: Photo}"
+                        alt=""
+                        style="
+                          min-width: 100%;
+                          height: 16rem;
+                          object-fit: cover;
+                          object-position: top center;
+                        "
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-muted fw-bold" style="font-size: 8rem" data-bind="visible: favAthletes().length == 0 && favCountries().length == 0 && favModalities().length == 0 && favGames().length == 0">
+        There are no favorites
+      </div>
+      <br class="my-5">
+      <br class="my-3">
+
+    </main>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="myModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <img
+                src="../../images/olympic-rings-colorized.svg "
+                style="height: 2rem"
+                alt="Olympic Rings"
+              />
+              Loading data...
+            </h5>
+          </div>
+          <div class="modal-body text-center">
+            <i class="fa fa-spin fa-3x fa-refresh"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="fixed-bottom end-0 d-flex justify-content-end"
+      style="height: 6rem"
+    >
+      <img
+        src="../../images/BackTop.svg"
+        type="button"
+        class="me-5 mb-5 text-"
+        id="BackTop-button"
+        alt=""
+      />
+    </div>
+    <br class="my-5">
+    <br class="my-3">
+    <!-- End of Working Area -->
+    <footer class="footer-20192">
+      <div class="site-section">
+        <div class="container">
+          <div
+            class="cta d-block d-md-flex align-items-center px-5"
+            style="background-color: #fe5f55"
+          >
+            <div>
+              <h2 class="mb-0 me-3">Excited for new projects?</h2>
+              <h3 class="text-dark">Don't miss out!</h3>
+            </div>
+            <div class="ml-auto">
+              <a
+                href="../../index.html#Novidades"
+                id="btnNov"
+                class="btn btn-outline-light rounded-3 rounded-0 py-3 px-5"
+                >Sign up for news</a
+              >
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3 col-6">
+              <a href="#">
+                <img
+                  src="../../images/olympic-rings.svg"
+                  class="ms-4"
+                  width="50%"
+                  alt=""
+                />
+              </a>
+              <p class="copyright">
+                <small>&copy; 2023</small>
+              </p>
+            </div>
+            <div class="col-3 d-md-block d-none">
+              <h3>About</h3>
+              <ul class="list-unstyled links">
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="../athletes/athletes.html">Athletes</a></li>
+                <li><a href="../modalities/modalities.html">Modalities</a></li>
+                <li><a href="../countries/countries.html">Countries</a></li>
+                <li><a href="../games/games.html">Games</a></li>
+                <li><a href="../statistics/statistics.html">Statistics</a></li>
+              </ul>
+            </div>
+            <div class="col-3 d-md-block d-none">
+              <h3>Important Links</h3>
+              <ul class="list-unstyled links">
+                <li><a href="https://www.ua.pt/">Universidade de Aveiro</a></li>
+                <li>
+                  <a href="https://www.ua.pt/pt/uc/12289"
+                    >Introdução às Tecnologias Web
+                  </a>
+                </li>
+                <li><a href="https://github.com/detiuaveiro">DETI - UA </a></li>
+              </ul>
+            </div>
+            <div class="col-md-3 col-6">
+              <h3>Brought to you by:</h3>
+              <ul class="list-unstyled links">
+                <li>
+                  <a href="mailto:pmap@ua.pt">pmap@ua.pt</a>&nbsp;&nbsp;&nbsp;<a
+                    class="me-5"
+                    href="https://github.com/GH-Pedro"
+                    ><span class="fa fa-github"></span
+                  ></a>
+                </li>
+                <li>
+                  <a href="mailto:zakhar.kruptsala@ua.pt"
+                    >zakhar.kruptsala@ua.pt</a
+                  >&nbsp;&nbsp;&nbsp;<a
+                    class="me-5"
+                    href="https://github.com/Blosuhm"
+                    ><span class="fa fa-github"></span
+                  ></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="../../libs/bootstrap-5.2.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../libs/knockout-3.5.1.js"></script>
+    <script src="../../libs/jquery/jquery-3.6.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.5/swiper-bundle.min.js"></script>
+    <script src="favorites.js"></script>
+  </body>
+</html>

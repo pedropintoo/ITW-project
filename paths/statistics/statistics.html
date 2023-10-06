@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
+    />
+    <link
+      type="text/css"
+      href="../../libs/jquery-ui/jquery-ui.min.css"
+      rel="stylesheet"
+    />
+    <script src="../../libs/jquery/jquery-3.6.1.js"></script>
+    <link
+      rel="stylesheet"
+      href="../../libs/bootstrap-5.2.2-dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../../libs/font-awesome-4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="../../style.css" />
+    <link rel="stylesheet" href="../countries/countryStyle.css" />
+    <link rel="stylesheet" href="../../cube.css" />
+    <link rel="stylesheet" href="../../libs/leaflet/leaflet.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"
+    />
+    <script src="../../libs/knockout-3.5.1.js"></script>
+    <script src="../../libs/jquery-ui/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+
+    <title>ITW 2022 - Olympic Statistics</title>
+    <style>
+      .carousel {
+        margin: 0;
+      }
+      .carousel-item {
+        z-index: -100;
+        height: 70vh;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-color: rgba(0, 0, 0, 0.603);
+      }
+      .carousel-item:nth-child(1) {
+        background-image: url("images/Olimp3.svg");
+      }
+      .carousel-item:nth-child(2) {
+        background-image: url("images/Olimp4.svg");
+      }
+      .carousel-item:nth-child(3) {
+        background-image: url("images/Olimp2.svg");
+      }
+
+      /* .tabsCarousel {
+        background-color: transparent !important;
+        position: absolute;
+        top: 63vh;
+        left: 0;
+        right: 0;
+        z-index: 10000 !important;
+        font-size: 20px;
+      } */
+    </style>
+  </head>
+  <body>
+    <nav
+      class="navbar navbar-expand-sm fixed-top navbarBG"
+      style="z-index: 5000 !important"
+      id="neubar2"
+    >
+      <div class="container">
+        <a class="navbar-brand" href="../../index.html" tabindex="Olympics"
+          ><img
+            src="../../images/olympic-rings.svg"
+            height="55"
+            alt="Olympic Rings"
+        /></a>
+        <button
+          class="navbar-toggler text-bg-light"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a
+                class="nav-link mx-2 active text-white navbarButton text-center"
+                aria-current="page"
+                href="../modalities/modalities.html"
+                >Modalities</a
+              >
+            </li>
+
+            <li class="nav-item">
+              <a
+                class="nav-link mx-2 text-white navbarButton text-center"
+                href="../countries/countries.html"
+                >Countries</a
+              >
+            </li>
+
+            <li class="nav-item">
+              <a
+                class="nav-link mx-2 text-white border border-2 rounded-pill navbarButton2 text-center"
+                href="../athletes/athletes.html"
+                >Statistics</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Working Area -->
+    <main id="workArea">
+      <div class="mt-5" id="target-element">&nbsp;</div>
+      <!-- NAO RETIRAR ESTA DIV FUNCIONA PARA PODER COLOCAR INFORMACAO EM BAIXO DO CAROSEL-->
+      <h1 class="titulo mt-5">Table of the Most Decorated Countries</h1>
+      <hr class="hrSpecial" />
+
+      <div class="container w-100" style="width: 100%">
+        <div class="container w-75">
+          <div class="row">
+            <div class="col-12">
+              <div id="graph0">
+                <canvas id="myChart0"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="row text-center">
+            <div class="col-12">
+              <button
+                type="button"
+                class="btn btn-outline-success mb-5 mt-3"
+                id="add-button"
+              >
+                Add Data
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-danger mb-5 mt-3"
+                id="remove-button"
+              >
+                Remove Data
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-3 col-sm-6 col-12 my-2">
+            <div class="card">
+              <div class="card-content">
+                <div class="card-body">
+                  <div class="media">
+                    <div class="row">
+                      <div class="media-body text-right col-7">
+                        <h3
+                          class="titulo text-start"
+                          data-bind="text:TotalModalidades"
+                        ></h3>
+                        <span>Total Modalities</span>
+                      </div>
+                      <div class="col-5">
+                        <img
+                          src="../../images/mod.png"
+                          class="ms-auto"
+                          style="max-height: 4rem"
+                          alt=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-sm-6 col-12 my-2">
+            <div class="card">
+              <div class="card-content">
+                <div class="card-body">
+                  <div class="media">
+                    <div class="row">
+                      <div class="media-body text-right col-7">
+                        <h3
+                          class="titulo text-start"
+                          data-bind="text:TotalCompeticoes"
+                        ></h3>
+                        <span>Total Competitions</span>
+                      </div>
+                      <div class="col-5">
+                        <img
+                          src="../../images/comp.png"
+                          class="ms-auto"
+                          style="max-height: 4rem"
+                          alt=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-sm-6 col-12 my-2">
+            <div class="card">
+              <div class="card-content">
+                <div class="card-body">
+                  <div class="media">
+                    <div class="row">
+                      <div class="media-body text-right col-7">
+                        <h3
+                          class="titulo text-start"
+                          data-bind="text: TotalJogos"
+                        ></h3>
+                        <span>Total Games</span>
+                      </div>
+                      <div class="col-5">
+                        <img
+                          src="../../images/olimpic.png"
+                          class="ms-auto"
+                          style="max-height: 4rem"
+                          alt=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-sm-6 col-12 my-2">
+            <div class="card">
+              <div class="card-content">
+                <div class="card-body">
+                  <div class="media">
+                    <div class="row">
+                      <div class="media-body text-right col-7">
+                        <h3
+                          class="titulo text-start"
+                          data-bind="text: TotalPaises"
+                        ></h3>
+                        <span>Total Countries</span>
+                      </div>
+                      <div class="col-5">
+                        <img
+                          src="../../images/bandeira.png"
+                          class="ms-auto"
+                          style="max-height: 4rem"
+                          alt=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row m-0 p-0">
+            <div class="col-xl-5 col-md-12 my-3 mx-auto">
+              <div class="card">
+                <div class="card-content">
+                  <div class="card-body">
+                    <div class="media">
+                      <div class="row">
+                        <div class="media-body col-6">
+                          <h2
+                            class="titulo text-start"
+                            data-bind="text: TotalAtletas"
+                          ></h2>
+                          <span>Total Athletes</span>
+                        </div>
+                        <div class="col-6">
+                          <img
+                            src="../../images/user.png"
+                            class="ms-auto"
+                            style="max-height: 4rem"
+                            alt=""
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h1 class="titulo mt-5" id="target-element1">Percentage Man/Woman</h1>
+        <div class="container w-75 my-3">
+          <div class="row">
+            <div class="col-12 my-4">
+              <div id="graphSex0" class="mx-auto text-center">
+                <canvas
+                  id="ChartSex0"
+                  style="
+                    max-height: 22rem;
+                    max-width: 22rem;
+                    display: block;
+                    margin: 0 auto;
+                  "
+                ></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container text-center">
+          <div class="row">
+            <div class="col-12 col-md-4 my-2">
+              <h1 class="Ouro" style="font-size: 1.5rem">Gold Medals</h1>
+              <canvas id="ChartSex1" class="col-4"></canvas>
+            </div>
+            <div class="col-12 col-md-4 my-2">
+              <h1 class="Prata" style="font-size: 1.5rem">Silver Medals</h1>
+              <canvas id="ChartSex2" class="col-4"></canvas>
+            </div>
+            <div class="col-12 col-md-4 my-2">
+              <h1 class="Bronze" style="font-size: 1.5rem">Bronze Medals</h1>
+              <canvas id="ChartSex3" class="col-4"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mx-5">
+        <h1 class="titulo mt-5" id="target-element1">
+          Evolução nos jogos Olímpicos
+        </h1>
+        <ul class="nav nav-tabs mt-5">
+          <li class="nav-item">
+            <a
+              type="button"
+              id="tab1"
+              class="nav-link text-danger active"
+              aria-current="page"
+              data-bind="click: function() { tabs(1) }"
+              >Competitions</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              type="button"
+              id="tab2"
+              class="nav-link text-dark"
+              data-bind="click: function() { tabs(2) }"
+              >Athletes</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              type="button"
+              id="tab3"
+              class="nav-link text-dark"
+              data-bind="click: function() { tabs(3) }"
+              >Countries</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              type="button"
+              id="tab4"
+              class="nav-link text-dark"
+              data-bind="click: function() { tabs(4) }"
+              >Modalities</a
+            >
+          </li>
+        </ul>
+
+        <div class="container w-100 mb-5">
+          <div class="row">
+            <div class="col-12 col-lg-10 mx-auto my-5">
+              <div id="graph">
+                <canvas id="myChart"></canvas>
+              </div>
+            </div>
+            <div class="col-12 col-lg-10 mx-auto my-5">
+              <div id="graph2">
+                <canvas id="myChart2"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="fixed-bottom end-0 d-flex justify-content-end"
+          style="height: 6rem"
+        >
+          <img
+            src="../../images/BackTop.svg"
+            type="button"
+            class="me-5 mb-5 text-"
+            id="BackTop-button"
+            alt=""
+          />
+        </div>
+      </div>
+    </main>
+    <!-- End of Working Area -->
+    <footer class="footer-20192">
+      <div class="site-section">
+        <div class="container">
+          <div
+            class="cta d-block d-md-flex align-items-center px-5"
+            style="background-color: #fe5f55"
+          >
+            <div>
+              <h2 class="mb-0 me-3">Excited for new projects?</h2>
+              <h3 class="text-dark">Don't miss anything!</h3>
+            </div>
+            <div class="ml-auto">
+              <a
+                href="../../index.html#Novidades"
+                id="btnNov"
+                class="btn btn-outline-light rounded-3 rounded-0 py-3 px-5"
+                >Receive News</a
+              >
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-3 col-6">
+              <a href="#">
+                <img
+                  src="../../images/olympic-rings.svg"
+                  class="ms-4"
+                  width="50%"
+                  alt=""
+                />
+              </a>
+              <p class="copyright">
+                <small>&copy; 2023</small>
+              </p>
+            </div>
+            <div class="col-3 d-md-block d-none">
+              <h3>About</h3>
+              <ul class="list-unstyled links">
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="../athletes/athletes.html">Athletes</a></li>
+                <li>
+                  <a href="../modalities/modalities.html">Modalities</a>
+                </li>
+                <li><a href="../countries/countries.html">Countries</a></li>
+                <li><a href="../games/games.html">Games</a></li>
+                <li>
+                  <a href="#">Statistics</a>
+                </li>
+              </ul>
+            </div>
+            <div class="col-3 d-md-block d-none">
+              <h3>Important Links</h3>
+              <ul class="list-unstyled links">
+                <li><a href="https://www.ua.pt/">Universidade de Aveiro</a></li>
+                <li>
+                  <a href="https://www.ua.pt/pt/uc/12289"
+                    >Introdução às Tecnologias Web
+                  </a>
+                </li>
+                <li><a href="https://github.com/detiuaveiro">DETI - UA </a></li>
+              </ul>
+            </div>
+            <div class="col-md-3 col-6">
+              <h3>Brought to you by:</h3>
+              <ul class="list-unstyled links">
+                <li>
+                  <a href="mailto:pmap@ua.pt">pmap@ua.pt</a>&nbsp;&nbsp;&nbsp;<a
+                    class="me-5"
+                    href="https://github.com/GH-Pedro"
+                    ><span class="fa fa-github"></span
+                  ></a>
+                </li>
+                <li>
+                  <a href="mailto:zakhar.kruptsala@ua.pt"
+                    >zakhar.kruptsala@ua.pt</a
+                  >&nbsp;&nbsp;&nbsp;<a
+                    class="me-5"
+                    href="https://github.com/Blosuhm"
+                    ><span class="fa fa-github"></span
+                  ></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- NAO COLOCAR AQUI CODIGO!!!-->
+    <script src="../../libs/leaflet/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-routing-machine@latest/dist/leaflet-routing-machine.min.js"></script>
+    <script src="../../libs/bootstrap-5.2.2-dist/js/bootstrap.bundle.js"></script>
+    <script src="searchBar.js"></script>
+
+    <script src="statistics.js"></script>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+@font-face {
+    font-family: 'Rocher';
+    src: url(https://assets.codepen.io/9632/RocherColorGX.woff2);
+  }
+
+@font-palette-values --Prata {
+    font-family: Rocher;
+    base-palette: 9;
+}
+
+@font-palette-values --Ouro {
+    font-family: Rocher;
+    base-palette: 8;
+}
+
+@font-palette-values --Mint {
+    font-family: Rocher;
+    base-palette: ;
+}
+
+.Ouro {
+    font-family:'Rocher';
+    letter-spacing: 0.05rem;
+    font-palette: --Ouro;
+
+}
+
+.Prata {
+    font-family:'Rocher';
+    letter-spacing: 0.05rem;
+    font-palette: --Prata;
+}
+
+.Bronze {
+    font-family:'Rocher';
+    letter-spacing: 0.05rem;
+    font-palette: --Mint;
+    /*I have the yellow color, to be the bronze color*/
+    /*Use filter please*/
+    filter: hue-rotate(700deg) saturate(80%) brightness(100%);
+
+}

@@ -1,0 +1,391 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>ITW 2022/23 - Olympic Games editions List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
+    />
+    <link
+      href="../../libs/bootstrap-5.2.2-dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="../../libs/font-awesome-4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <link rel="stylesheet" href="../../style.css" />
+  </head>
+  <body>
+    <header class="position-sticky top-0" style="z-index: 1000">
+      <nav
+        class="navbar navbar-expand-lg bg-white border-bottom"
+        aria-label="Primary Navigation"
+      >
+        <a class="navbar-brand font-bold ms-5" href="../../index.html"
+          ><img
+            src="../../images/olympic-rings-colorized.svg"
+            alt="Olympic Rings"
+            style="object-fit: contai; max-height: 3.5rem"
+        /></a>
+        <button
+          class="navbar-toggler me-5"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav gap-3 ms-auto me-5 fs-5 align-items-end">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                aria-current="page"
+                href="../statistics/statistics.html"
+                ><i class="fa fa-bar-chart text-secondary"></i> Statistics</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                aria-current="page"
+                href="../favorites/favorites.html"
+                ><i class="fa fa-heart-o text-danger"></i> Favorites</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                aria-current="page"
+                href="../athletes/athletes.html"
+                ><i class="fa fa-user-o text-warning"></i> Athletes</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                aria-current="page"
+                href="../countries/countries.html"
+                ><i class="fa fa-flag-o text-danger"></i> Countries</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="games.html"
+                ><i class="fa fa-map-marker text-success"></i> Games</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                aria-current="page"
+                href="../modalities/modalities.html"
+                ><i class="fa fa-soccer-ball-o text-primary"></i> Modalities</a
+              >
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <!-- Working Area -->
+    <div id="target-element">&nbsp;</div>
+    <main class="container">
+      <h3 class="titulo my-4">Olympic Games Map</h3>
+      <div class="container">
+        <div
+          class="rounded-5 mx-auto my-4"
+          id="map"
+          style="position: relative; width: 100%; height: 28rem"
+        ></div>
+      </div>
+      <div class="border-bottom py-2 mb-2">
+        <h2 data-bind="text:displayName"></h2>
+      </div>
+      <!-- ko if:records().length > 0 -->
+      <div class="row small">
+        <p class="col-4 mr-auto pt-2">
+          <span
+            data-bind="html: 'Page: ' + currentPage() + ' of ' + totalPages()"
+          ></span
+          ><br />
+          <span
+            data-bind="html: 'Games: '+ fromRecord() + '-' + toRecord() + ' of ' + totalRecords()"
+          ></span>
+        </p>
+        <div class="col-8 my-0 pt-3">
+          <ul class="pagination float-end">
+            <!-- ko if: currentPage() > 5 && totalPages() > 10 -->
+            <li class="page-item float-end">
+              <a
+                class="page-link"
+                title="First Page"
+                data-bind="attr: { href: './games.html?page=' + '1',  rel:'prev'}"
+                >⇤</a
+              >
+            </li>
+
+            <li class="page-item float-end">
+              <a
+                class="page-link"
+                title="Previous Page"
+                data-bind="attr: { href: './games.html?page=' + previousPage(),  rel:'prev'}"
+                >←</a
+              >
+            </li>
+            <!-- /ko -->
+            <!-- ko foreach: pageArray()-->
+            <!-- ko if:$data == $parent.currentPage() -->
+            <li class="active page-item">
+              <a
+                class="page-link"
+                data-bind="attr: { title:'Current Page ' + $data }, text: $data"
+              ></a>
+            </li>
+            <!-- /ko -->
+            <!-- ko if:$data != $parent.currentPage() -->
+            <li class="page-item">
+              <a
+                class="page-link"
+                data-bind="attr: { href: './games.html?page=' + $data, title:'Goto Page ' + $data }, text:$data"
+              ></a>
+            </li>
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko if: currentPage() < totalPages() - 4 && totalPages() > 9 -->
+            <li class="page-item">
+              <a
+                class="page-link"
+                title="Next Page"
+                data-bind="attr: { href: './games.html?page=' + nextPage(), rel:'next' }"
+                >→</a
+              >
+            </li>
+            <li class="page-item">
+              <a
+                class="page-link"
+                title="Last Page"
+                data-bind="attr: { href: './games.html?page=' + totalPages() }"
+                >⇥</a
+              >
+            </li>
+            <!-- /ko -->
+          </ul>
+        </div>
+      </div>
+      <!-- /ko -->
+
+      <div>
+        <div
+          class="rounded-0 row row-cols-1 row-cols-md-2 row-cols-xl-3"
+          data-bind="foreach: records"
+        >
+          <div class="px-3 my-3">
+            <div class="list-group-item border bg-white shadow">
+              <div
+                class="d-flex justify-content-around align-items-center border-bottom"
+              >
+                <a
+                  data-bind="attr: {href: `gameDetails/gameDetails.html?id=${Id}`}"
+                  class="text-decoration-none"
+                >
+                  <h2
+                    class="text-muted fw-bold fs-3"
+                    data-bind="text: Name"
+                  ></h2>
+                </a>
+                <a
+                  class="d-flex justify-content-center align-items-center m-1"
+                  data-bind="attr: {href: `gameDetails/gameDetails.html?id=${Id}`}"
+                  style="width: 50%"
+                >
+                  <img
+                    class="img-thumbnail"
+                    data-bind="attr: {src: Logo}"
+                    alt=""
+                    style="height: 16rem; object-fit: contain"
+                  />
+                </a>
+                <button
+                  class="fa position-absolute shadow bg-white btn square border-0 rounded-circle fs-4"
+                  data-bind="click: function() {$parent.toggleFavorite($data)} , attr: {id: 'fav-' + Id}, css: {'text-danger': $parent.isFavorite(Id), 'fa-heart': $parent.isFavorite(Id), 'fa-heart-o': !$parent.isFavorite(Id)}"
+                  style="width: 3rem; top: 11rem; left: 5rem"
+                  aria-hidden="true"
+                ></button>
+              </div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between">
+                  <span class="text-muted small">Country:</span
+                  ><span data-bind="text: CountryName"></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span class="text-muted small">City:</span
+                  ><span data-bind="text: CityName"></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span class="text-muted small">Year:</span
+                  ><span data-bind="text: Year"></span>
+                </li>
+              </ul>
+              <img
+                class="border"
+                data-bind="attr: {src: Photo}"
+                alt=""
+                style="
+                  min-width: 100%;
+                  height: 16rem;
+                  object-fit: cover;
+                  object-position: top center;
+                "
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <div
+      class="fixed-bottom end-0 d-flex justify-content-end"
+      style="height: 6rem"
+    >
+      <img
+        src="../../images/BackTop.svg"
+        type="button"
+        class="me-5 mb-5 text-"
+        id="BackTop-button"
+        alt=""
+      />
+    </div>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="myModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <img
+                src="../../images/olympic-rings-colorized.svg "
+                height="30"
+                alt="olympics logo"
+              />
+              Loading data...
+            </h5>
+          </div>
+          <div class="modal-body text-center">
+            <i class="fa fa-spin fa-3x fa-refresh"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of Working Area -->
+    <footer class="footer-20192" style="margin-top: 13rem">
+      <div class="site-section">
+        <div class="container">
+          <div
+            class="cta d-block d-md-flex align-items-center px-5"
+            style="background-color: #fe5f55"
+          >
+            <div>
+              <h2 class="mb-0 me-3">Excited for new projects?</h2>
+              <h3 class="text-dark">Don't miss out!</h3>
+            </div>
+            <div class="ml-auto">
+              <a
+                href="../../index.html#Novidades"
+                id="btnNov"
+                class="btn btn-outline-light rounded-3 rounded-0 py-3 px-5"
+                >Sign up for news</a
+              >
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3 col-6">
+              <a href="#">
+                <img
+                  src="../../images/olympic-rings.svg"
+                  class="ms-4"
+                  width="50%"
+                  alt=""
+                />
+              </a>
+              <p class="copyright">
+                <small>&copy; 2023</small>
+              </p>
+            </div>
+            <div class="col-3 d-md-block d-none">
+              <h3>About</h3>
+              <ul class="list-unstyled links">
+                <li><a href="../../index.html">Home</a></li>
+                <li><a href="../athletes/athletes.html">Athletes</a></li>
+                <li>
+                  <a href="../modalities/modalities.html">Modalities</a>
+                </li>
+                <li><a href="../countries/countries.html">Countries</a></li>
+                <li><a href="../games/games.html">Games</a></li>
+                <li>
+                  <a href="../statistics/statistics.html">Statistics</a>
+                </li>
+              </ul>
+            </div>
+            <div class="col-3 d-md-block d-none">
+              <h3>Important Links</h3>
+              <ul class="list-unstyled links">
+                <li><a href="https://www.ua.pt/">Universidade de Aveiro</a></li>
+                <li>
+                  <a href="https://www.ua.pt/pt/uc/12289"
+                    >Introdução às Tecnologias Web
+                  </a>
+                </li>
+                <li><a href="https://github.com/detiuaveiro">DETI - UA </a></li>
+              </ul>
+            </div>
+            <div class="col-md-3 col-6">
+              <h3>Brought to you by:</h3>
+              <ul class="list-unstyled links">
+                <li>
+                  <a href="mailto:pmap@ua.pt">pmap@ua.pt</a>&nbsp;&nbsp;&nbsp;<a
+                    class="me-5"
+                    href="https://github.com/GH-Pedro"
+                    ><span class="fa fa-github"></span
+                  ></a>
+                </li>
+                <li>
+                  <a href="mailto:zakhar.kruptsala@ua.pt"
+                    >zakhar.kruptsala@ua.pt</a
+                  >&nbsp;&nbsp;&nbsp;<a
+                    class="me-5"
+                    href="https://github.com/Blosuhm"
+                    ><span class="fa fa-github"></span
+                  ></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="../../libs/bootstrap-5.2.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../libs/leaflet/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-routing-machine@latest/dist/leaflet-routing-machine.min.js"></script>
+    <script src="../../libs/knockout-3.5.1.js"></script>
+    <script src="../../libs/jquery/jquery-3.6.1.js"></script>
+    <script src="games.js"></script>
+  </body>
+</html>

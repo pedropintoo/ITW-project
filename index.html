@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
+    />
+    <link
+      type="text/css"
+      href="libs/jquery-ui/jquery-ui.min.css"
+      rel="stylesheet"
+    />
+    <script src="libs/jquery/jquery-3.6.1.js"></script>
+    <link
+      rel="stylesheet"
+      href="libs/bootstrap-5.2.2-dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="libs/font-awesome-4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="cube.css" />
+    <link rel="stylesheet" href="libs/leaflet/leaflet.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"
+    />
+    <script src="libs/knockout-3.5.1.js"></script>
+    <script src="libs/jquery-ui/jquery-ui.min.js"></script>
+
+    <title>ITW 2022/23 - Olympic Athletes List</title>
+    <style>
+      .carousel {
+        margin: 0;
+      }
+      .carousel-item {
+        z-index: -100;
+        height: 70vh;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-color: rgba(0, 0, 0, 0.603);
+      }
+      .carousel-item:nth-child(1) {
+        background-image: url("images/Olimp3.svg");
+      }
+      .carousel-item:nth-child(2) {
+        background-image: url("images/Olimp4.svg");
+      }
+      .carousel-item:nth-child(3) {
+        background-image: url("images/Olimp2.svg");
+      }
+
+      /* .tabsCarousel {
+        background-color: transparent !important;
+        position: absolute;
+        top: 63vh;
+        left: 0;
+        right: 0;
+        z-index: 10000 !important;
+        font-size: 20px;
+      }qsd */
+    </style>
+  </head>
+  <body>
+    <nav
+      class="navbar navbar-expand-sm fixed-top"
+      style="z-index: 5000 !important"
+      id="neubar"
+    >
+      <div class="container">
+        <a class="navbar-brand" href="index.html" tabindex="Olympics"
+          ><img src="images/olympic-rings.svg" height="55" alt="Olympic Rings"
+        /></a>
+        <button
+          class="navbar-toggler text-bg-light"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+            <li
+              data-bind="event: {mouseenter: expandSearch}"
+              class="nav-item search rounded-pill d-flex justify-content-center align-items-center position-relative"
+            >
+              <button
+                class="fa fa-search mx-2 active text-white text-center btn border-0 p-2 fs-5"
+                aria-current="page"
+              ></button>
+              <input
+                class="text-white"
+                type="text"
+                placeholder="Search"
+                aria-expanded="false"
+                data-bind="value: searchInput, valueUpdate: 'input change', event: {input: activateSearch, focusout: collapseSearch}"
+              />
+              <!-- ko if: searched -->
+              <div
+                class="search-results position-absolute rounded-3 bg-white d-flex"
+                style="top: 3rem; max-height: 24em; z-index: 2000"
+                data-bind="event: {mousedown: function(e) {e.preventDefault()}}"
+              >
+                <div class="p-3 search-results-column">
+                  <h4 class="fw-semibold">Athletes</h4>
+                  <div data-bind="foreach: searchAthletes">
+                    <div class="border-bottom">
+                      <a
+                        class="text-decoration-none text-dark"
+                        data-bind="text: Name, attr: {href: 'paths/athletes/athleteDetails/athleteDetails.html?id=' + Id}"
+                      ></a>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="p-3 search-results-column"
+                  style="overflow-y: scroll; overflow-x: hidden"
+                >
+                  <h4 class="fw-semibold">Countries</h4>
+                  <div data-bind="foreach: searchCountries">
+                    <div class="border-bottom">
+                      <a
+                        class="text-decoration-none text-dark"
+                        data-bind="text: Name, attr: {href: 'paths/countries/countryDetails/countryDetails.html?id=' + Id}"
+                      ></a>
+                    </div>
+                  </div>
+                </div>
+                <div class="p-3 search-results-column">
+                  <h4 class="fw-semibold">Modalities</h4>
+                  <div data-bind="foreach: searchModalities">
+                    <div class="border-bottom">
+                      <a
+                        class="text-decoration-none text-dark"
+                        data-bind="text: Name, attr: {href: 'paths/modalities/modalities.html?id=' + Id}"
+                      ></a>
+                    </div>
+                  </div>
+                </div>
+                <div class="p-3 search-results-column">
+                  <h4 class="fw-semibold">Games</h4>
+                  <div data-bind="foreach: searchGames">
+                    <div class="border-bottom">
+                      <a
+                        class="text-decoration-none text-dark"
+                        data-bind="text: Name, attr: {href: 'paths/games/gameDetails/gameDetails.html?id=' + Id}"
+                      ></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- /ko -->
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link mx-2 active text-white navbarButton text-center"
+                aria-current="page"
+                href="paths/modalities/modalities.html"
+                >Modalities</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link mx-2 text-white navbarButton text-center"
+                href="paths/countries/countries.html"
+                >Countries</a
+              >
+            </li>
+
+            <li class="nav-item">
+              <a
+                class="nav-link mx-2 text-white border border-2 rounded-pill navbarButton2 text-center"
+                href="paths/statistics/statistics.html"
+                >Statistics</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div
+      id="myCarousel"
+      class="carousel slide carousel-fade mb-5 bg-opacity-10 col-12"
+      data-bs-ride="carousel"
+    >
+      <div class="carousel-indicators d-none">
+        <button
+          type="button"
+          data-bs-target="#myCarousel"
+          data-bs-slide-to="0"
+          aria-label="Slide 1"
+          class="active"
+          aria-current="true"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#myCarousel"
+          data-bs-slide-to="1"
+          aria-label="Slide 2"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#myCarousel"
+          data-bs-slide-to="2"
+          aria-label="Slide 3"
+        ></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active" id="Slide1"></div>
+        <div class="carousel-item" id="Slide2"></div>
+        <div class="carousel-item" id="Slide3"></div>
+        <div
+          class="tabsCarousel position-absolute bottom-0 w-100"
+          style="z-index: 10"
+        >
+          <ul class="nav justify-content-center">
+            <li class="nav-item mx-4 mt-2 border-light border-4 border-bottom">
+              <a
+                type="button"
+                class="nav-link text-light"
+                aria-current="page"
+                id="scroll-button1"
+                >Curiosities</a
+              >
+            </li>
+            <li class="nav-item mx-4 mt-2 d-md-block d-none">
+              <a class="nav-link text-light" href="paths/athletes/athletes.html"
+                >Athletes</a
+              >
+            </li>
+            <li class="nav-item mx-4 mt-2 d-md-none d-block">
+              <a type="button" class="nav-link text-light" id="scroll-button2"
+                >Information</a
+              >
+            </li>
+            
+            </li>
+            <li class="nav-item mx-4 mt-2 d-md-block d-none">
+              <a class="nav-link text-light" href="paths/games/games.html"
+                >Games</a
+              >
+            </li><li class="nav-item mx-4 mt-2 d-md-block d-none">
+              <a
+                class="nav-link text-light"
+                href="paths/favorites/favorites.html"
+                >Favorites</a
+              >
+          </ul>
+        </div>
+      </div>
+
+      <button
+        class="carousel-control-prev e"
+        type="button"
+        data-bs-target="#myCarousel"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#myCarousel"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+
+    <!-- Working Area -->
+    <main id="workArea">
+      <div class="mt-5">&nbsp;</div>
+      <!-- NAO RETIRAR ESTA DIV FUNCIONA PARA PODER COLOCAR INFORMACAO EM BAIXO DO CAROSEL-->
+      <h1 class="titulo" id="target-element1">Olympic Games</h1>
+      <hr class="hrSpecial" />
+      <div class="Scontainer">
+        <p>
+          The Olympic Games are an international sports competition that takes
+          place every four years and brings together athletes from all countries
+          of the world. The first edition of the modern Olympic Games took place
+          in Athens, Greece, in 1896. Since then, they have been held in
+          alternating years, with the Winter and Summer Olympics occurring in
+          different years.
+        </p>
+        <hr class="hrSpecial" />
+        <p>
+          They are a celebration of sports and international friendship, and aim
+          to promote peace and understanding among the peoples of the world.
+          They also serve as a platform for athletes of all ages and skill
+          levels to compete in a wide variety of sports, including athletics,
+          swimming, gymnastics, tennis, basketball, and many more.
+        </p>
+      </div>
+
+      <div
+        class="mt-0 me-0 ms-0 w-100 d-flex justify-content-center"
+        id="target-element2"
+        style="background-color: #fe5f55; width: 100000px"
+      >
+        <div class="my-2">&nbsp;</div>
+        <div class="cube container mx-5">
+          <div class="row">
+            <div class="col-2 d-lg-block d-none"></div>
+            <div class="col-lg-4 col-12">
+              <br />
+              <div class="title">
+                <h1></h1>
+              </div>
+              <div class="slider">
+                <div class="container2">
+                  <div class="rotacao x"></div>
+                  <div class="rotacao y"></div>
+                  <div class="rotacao z"></div>
+                </div>
+                <div class="shadow"></div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-12">
+              <div class="text-center mt-5 mb-5">
+                <a
+                  href="paths/athletes/athletes.html"
+                  class="mt-3 btn btn-outline-light w-100"
+                  >View all Athletes</a
+                >
+                <a
+                  href="paths/countries/countries.html"
+                  class="mt-3 btn btn-outline-light w-100"
+                  >View all Countries</a
+                >
+                
+                <a
+                  href="paths/games/games.html"
+                  class="mt-3 btn btn-outline-light w-100"
+                  >View all Games</a
+                ><a
+                  href="paths/favorites/favorites.html"
+                  class="mt-3 btn btn-outline-light w-100"
+                  >View all Favorites</a
+                >
+              </div>
+              <div class="my-5 d-lg-block d-none" id="Novidades">&nbsp;</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container mt-5 rounded-4" style="background-color: #fe5f55">
+        <div class="row">
+          <div class="col-2"></div>
+          <div class="col-lg-4 col-8">
+            <h1 class="titulo mt-4 text-light">Receive News</h1>
+            <div class="text-center mt-5 mb-5">
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="floatingName"
+                  placeholder="Name"
+                  data-bind="value: nome, valueUpdate: 'input', class: nomeValido() ? 'is-valid':'is-invalid'"
+                />
+                <label for="floatingName">Name</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input
+                  type="email"
+                  class="form-control"
+                  id="floatingEmail"
+                  placeholder="name@example.com"
+                  data-bind="value: email, valueUpdate: 'input', class: emailValido() ? 'is-valid':'is-invalid'"
+                />
+                <label for="floatingEmail">Email</label>
+              </div>
+              <form class="form-floating mb-3">
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="floatingTelemovel"
+                  placeholder="+351"
+                  data-bind="value: telemovel, valueUpdate: 'input', class: telemovelValido() ? 'is-valid':'is-invalid'"
+                />
+                <label for="floatingTelemovel">Phone Number</label>
+              </form>
+              <button
+                class="btn btn-outline-light"
+                data-bind="enable: activeNovidades, click: clearAll"
+              >
+                Receive News
+              </button>
+            </div>
+          </div>
+
+          <div class="col-5 p-4 rounded-4">
+            <div class="col-lg-4 col-9">
+              <div
+                class="ms-5 mt-1 rounded-5"
+                id="map"
+                style="position: relative; width: 300%; height: 24rem"
+              ></div>
+            </div>
+            <div class="my-3 d-lg-none d-block">&nbsp;</div>
+          </div>
+        </div>
+      </div>
+
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <div
+        class="fixed-bottom end-0 d-flex justify-content-end"
+        style="height: 6rem"
+      >
+        <img
+          src="images/BackTop.svg"
+          type="button"
+          class="me-5 mb-5 text-"
+          id="BackTop-button"
+          alt=""
+        />
+      </div>
+    </main>
+    <!-- End of Working Area -->
+    <footer class="footer-20192">
+      <div class="site-section">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-3 col-6">
+              <a href="#">
+                <img
+                  src="images/olympic-rings.svg"
+                  class="ms-4"
+                  width="50%"
+                  alt=""
+                />
+              </a>
+              <p class="copyright">
+                <small>&copy; 2023</small>
+              </p>
+            </div>
+            <div class="col-3 d-md-block d-none">
+              <h3>About</h3>
+              <ul class="list-unstyled links">
+                <li><a href="#">Home</a></li>
+                <li><a href="paths/athletes/athletes.html">Athletes</a></li>
+                <li>
+                  <a href="paths/modalities/modalities.html">Modalities</a>
+                </li>
+                <li><a href="paths/countries/countries.html">Countries</a></li>
+                <li><a href="paths/games/games.html">Games</a></li>
+                <li>
+                  <a href="paths/statistics/statistics.html">Statistics</a>
+                </li>
+              </ul>
+            </div>
+            <div class="col-3 d-md-block d-none">
+              <h3>Important Links</h3>
+              <ul class="list-unstyled links">
+                <li><a href="https://www.ua.pt/">Universidade de Aveiro</a></li>
+                <li>
+                  <a href="https://www.ua.pt/pt/uc/12289"
+                    >Introdução às Tecnologias Web
+                  </a>
+                </li>
+                <li><a href="https://github.com/detiuaveiro">DETI - UA </a></li>
+              </ul>
+            </div>
+            <div class="col-md-3 col-6">
+              <h3>Brought to you by:</h3>
+              <ul class="list-unstyled links">
+                <li>
+                  <a href="mailto:pmap@ua.pt">pmap@ua.pt</a>&nbsp;&nbsp;&nbsp;<a
+                    class="me-5"
+                    href="https://github.com/GH-Pedro"
+                    ><span class="fa fa-github"></span
+                  ></a>
+                </li>
+                <li>
+                  <a href="mailto:zakhar.kruptsala@ua.pt"
+                    >zakhar.kruptsala@ua.pt</a
+                  >&nbsp;&nbsp;&nbsp;<a
+                    class="me-5"
+                    href="https://github.com/Blosuhm"
+                    ><span class="fa fa-github"></span
+                  ></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- NAO COLOCAR AQUI CODIGO!!!-->
+    <script src="libs/leaflet/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-routing-machine@latest/dist/leaflet-routing-machine.min.js"></script>
+    <script src="libs/popper.min.js"></script>
+    <script src="libs/bootstrap-5.2.2-dist/js/bootstrap.bundle.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
